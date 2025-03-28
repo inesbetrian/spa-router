@@ -1,4 +1,5 @@
 import DomusPagina from "@/modulorum/landing/paginae/DomusPagina.vue";
+import NotFound404 from "@/modulorum/ordinarius/paginae/NotFound404.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 export const router = createRouter({
@@ -33,6 +34,18 @@ export const router = createRouter({
                     name: 'contact',
                     component: () => import('@/modulorum/landing/paginae/ContactusPagina.vue'),
                 },
+
+                {
+                    path: '/pokemon/:id',
+                    name: 'pokemon',
+                    props: (route) => {
+                        
+                            const id = Number(route.params.id);
+                           
+                            return isNaN(id) ? { id: 1 }: { id: id }                      
+                    },
+                    component: () => import('@/modulorum/pokemons/paginae/PokemonPagina.vue'),
+                },
         
             ]
         },
@@ -40,8 +53,28 @@ export const router = createRouter({
        
         {
             path: '/auth',
-            component: () => import('@/modulorum/auth/paginae/LoginPagina.vue'),
+            component: () => import('@/modulorum/auth/layouts/AuthLayout.vue'),
+            redirect: { name: 'login'},
+            children: [
+                {
+                    path: 'login',
+                    name: 'login',
+                    component: () => import('@/modulorum/auth/paginae/LoginPagina.vue') 
+                },
+                {
+                    path: 'register',
+                    name: 'register',
+                    component: () => import('@/modulorum/auth/paginae/RegisterPagina.vue') 
+                }
+            ]
         },
+
+        {
+            path: '/:pathMatch(.*)*',
+            // redirect: '/',
+            component: NotFound404,
+        }
+
     ]
 });
 
