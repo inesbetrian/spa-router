@@ -1,3 +1,4 @@
+import estPermititurGuar from "@/modulorum/auth/guards/est-permititur.guar";
 import DomusPagina from "@/modulorum/landing/paginae/DomusPagina.vue";
 import NotFound404 from "@/modulorum/ordinarius/paginae/NotFound404.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -38,6 +39,9 @@ export const router = createRouter({
                 {
                     path: '/pokemon/:id',
                     name: 'pokemon',
+                    beforeEnter: [
+                        estPermititurGuar
+                    ],
                     props: (route) => {
                         
                             const id = Number(route.params.id);
